@@ -1,0 +1,42 @@
+/* Home.css */
+
+.home-container {
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+}
+
+.home-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #0a7cff;
+}
+
+.home-logo {
+  width: 150px;
+}
+
+.logout-btn {
+  padding: 10px 20px;
+  background-color: #ff0a0a;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.logout-btn:hover {
+  background-color: #e60000;
+}
+
+.home-content {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.digital-card-img {
+  width: 500px;
+}

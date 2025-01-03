@@ -1,0 +1,27 @@
+/* NotFound.css */
+
+.not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.not-found {
+  text-align: center;
+}
+
+.not-found-img {
+  width: 300px;
+}
+
+.not-found-heading {
+  font-size: 24px;
+  color: #333;
+  margin-top: 20px;
+}
+
+.not-found-message {
+  font-size: 16px;
+  color: #666;
+}
