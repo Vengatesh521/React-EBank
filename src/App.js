@@ -9,8 +9,8 @@ const App = () => (
   <div>
     <Switch>
       <Route exact path="/" component={Home} />
-      <Route exact path="/login" component={Login} />
-      <Route exact path="/not-found" component={NotFound} />
+      <Route exact path="/ebank/login" component={Login} />
+      <Route exact path="/bad-path" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
   </div>

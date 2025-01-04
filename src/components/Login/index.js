@@ -31,7 +31,7 @@ class Login extends Component {
     Cookies.set('jwt_token', jwtToken, {
       expires: 30,
     })
-    history.replace('/')
+    history.replace('/') // Redirect to home route after login success
   }
 
   onSubmitFailure = errorMsg => {
@@ -42,15 +42,15 @@ class Login extends Component {
     event.preventDefault()
     const {userID, userPin} = this.state
     const userDetails = {
-      user_id: userID, // Use 'user_id' instead of 'userID'
-      pin: userPin, // Use 'pin' instead of 'userPin'
+      user_id: userID,
+      pin: userPin,
     }
     const url = 'https://apis.ccbp.in/ebank/login'
     const options = {
       method: 'POST',
       body: JSON.stringify(userDetails),
       headers: {
-        'Content-Type': 'application/json', // Ensure JSON content type is set
+        'Content-Type': 'application/json',
       },
     }
     const response = await fetch(url, options)
@@ -63,8 +63,13 @@ class Login extends Component {
   }
 
   render() {
-    const {userID, userPin, showPassword, showSubmitError, errorMsg} =
-      this.state
+    const {
+      userID,
+      userPin,
+      showPassword,
+      showSubmitError,
+      errorMsg,
+    } = this.state
     const jwtToken = Cookies.get('jwt_token')
 
     if (jwtToken !== undefined) {
@@ -82,7 +87,7 @@ class Login extends Component {
           </div>
           <div className="login-container">
             <form className="login" onSubmit={this.submitForm}>
-              <h1>Welcom Back!</h1>
+              <h1>Welcome Back!</h1>
               <label htmlFor="text">User ID</label>
               <input
                 id="text"
@@ -103,7 +108,7 @@ class Login extends Component {
                 <input
                   type="checkbox"
                   checked={showPassword}
-                  onChange={this.toggleShowPassword} // Call the toggle function
+                  onChange={this.toggleShowPassword}
                 />
                 Show Password
               </label>
@@ -118,4 +123,5 @@ class Login extends Component {
     )
   }
 }
+
 export default Login

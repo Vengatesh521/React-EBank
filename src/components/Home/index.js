@@ -1,13 +1,19 @@
-import {Link, withRouter} from 'react-router-dom'
+import {Link, withRouter, Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
-import './index.css' // Import the CSS file for Home
+import './index.css'
 
 const Home = props => {
   const onClickLogout = () => {
     const {history} = props
     Cookies.remove('jwt_token')
-    history.replace('/login')
+    history.replace('/ebank/login') // Update to correct logout route
   }
+
+  const jwtToken = Cookies.get('jwt_token')
+  if (jwtToken === undefined) {
+    return <Redirect to="/ebank/login" />
+  }
+
   return (
     <div className="home-container">
       <nav className="home-nav">
@@ -21,6 +27,8 @@ const Home = props => {
         </button>
       </nav>
       <div className="home-content">
+        <h1>Your Flexibility, Our Excellence</h1>{' '}
+        {/* Add the required heading */}
         <img
           className="digital-card-img"
           src="https://assets.ccbp.in/frontend/react-js/ebank-digital-card-img.png"
@@ -30,4 +38,5 @@ const Home = props => {
     </div>
   )
 }
+
 export default withRouter(Home)
