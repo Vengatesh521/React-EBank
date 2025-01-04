@@ -27,11 +27,8 @@ class Login extends Component {
 
   onSubmitSuccess = jwtToken => {
     const {history} = this.props
-
-    Cookies.set('jwt_token', jwtToken, {
-      expires: 30,
-    })
-    history.replace('/') // Redirect to home route after login success
+    Cookies.set('jwt_token', jwtToken, {expires: 30}) // Store JWT token in cookies
+    history.replace('/') // Redirect to Home
   }
 
   onSubmitFailure = errorMsg => {
@@ -41,10 +38,18 @@ class Login extends Component {
   submitForm = async event => {
     event.preventDefault()
     const {userID, userPin} = this.state
-    const userDetails = {
-      user_id: userID,
-      pin: userPin,
+
+    if (userID.trim() === '') {
+      this.onSubmitFailure('Invalid user ID')
+      return
     }
+
+    if (userPin.trim() === '') {
+      this.onSubmitFailure('Invalid PIN')
+      return
+    }
+
+    const userDetails = {user_id: userID, pin: userPin}
     const url = 'https://apis.ccbp.in/ebank/login'
     const options = {
       method: 'POST',
@@ -53,12 +58,18 @@ class Login extends Component {
         'Content-Type': 'application/json',
       },
     }
-    const response = await fetch(url, options)
-    const data = await response.json()
-    if (response.ok === true) {
-      this.onSubmitSuccess(data.jwt_token)
-    } else {
-      this.onSubmitFailure(data.error_msg)
+
+    try {
+      const response = await fetch(url, options)
+      const data = await response.json()
+
+      if (response.ok) {
+        this.onSubmitSuccess(data.jwt_token)
+      } else {
+        this.onSubmitFailure(data.error_msg || 'User ID and PIN didn’t match')
+      }
+    } catch {
+      this.onSubmitFailure('Network request failed. Please try again.')
     }
   }
 
@@ -75,47 +86,61 @@ class Login extends Component {
     if (jwtToken !== undefined) {
       return <Redirect to="/" />
     }
+
     return (
-      <div className="container">
-        <div className="box">
-          <div>
+      <div className="login-page">
+        <div className="login-box">
+          <div className="login-image-container">
             <img
-              className="img"
+              className="login-image"
               src="https://assets.ccbp.in/frontend/react-js/ebank-login-img.png"
               alt="website login"
             />
           </div>
-          <div className="login-container">
-            <form className="login" onSubmit={this.submitForm}>
-              <h1>Welcome Back!</h1>
-              <label htmlFor="text">User ID</label>
+          <div className="login-form-container">
+            <form className="login-form" onSubmit={this.submitForm}>
+              <h1 className="login-heading">Welcome Back!</h1>
+              <label htmlFor="userID" className="login-label">
+                User ID
+              </label>
               <input
-                id="text"
+                id="userID"
                 type="text"
+                className="login-input"
                 value={userID}
                 onChange={this.onChangeUserId}
                 placeholder="Enter User ID"
               />
-              <label htmlFor="pin">PIN</label>
+
+              <label htmlFor="userPin" className="login-label">
+                PIN
+              </label>
               <input
-                id="pin"
+                id="userPin"
                 type={showPassword ? 'text' : 'password'}
+                className="login-input"
                 value={userPin}
                 onChange={this.onChangePin}
                 placeholder="Enter PIN"
               />
-              <label>
+
+              <div className="password-toggle-container">
                 <input
                   type="checkbox"
+                  id="showPassword"
                   checked={showPassword}
                   onChange={this.toggleShowPassword}
                 />
-                Show Password
-              </label>
-              <button type="submit">Login</button>
-              {showSubmitError && (
-                <p style={{fontWeight: 'normal'}}>*{errorMsg}</p>
-              )}
+                <label htmlFor="showPassword" className="password-toggle-label">
+                  Show Password
+                </label>
+              </div>
+
+              <button type="submit" className="login-button">
+                Login
+              </button>
+
+              {showSubmitError && <p className="error-message">*{errorMsg}</p>}
             </form>
           </div>
         </div>
